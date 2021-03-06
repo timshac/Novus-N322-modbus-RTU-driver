@@ -9,8 +9,6 @@ Control your chiller or process heat from your phone.
 
 ![RS-485 Featherwing](img/MRv0.8_ARGON.JPG)
 
-The RS-485 Featherwing is can be used as a modbus controller when 
-
 ## Components
 
 * Novus N322 or similar Temperature Controller
