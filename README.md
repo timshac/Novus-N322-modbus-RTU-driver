@@ -45,6 +45,6 @@ particle serial flash out.bin
 
 Open the Particle.io app on your phone to control your Novus 322. Temperature is reported once a minute on the Events tab.  Setpoint can be changed on the Functions tab.
 
-![Particle App Events](img/events.png)
+![Particle App Events](img/events.PNG)
 
 ![Particle App Functions](img/functions.jpeg)
