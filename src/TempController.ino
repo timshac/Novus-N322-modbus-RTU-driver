@@ -100,8 +100,6 @@ void setup() {
 
 }
 
-
-
 void ParticleFunctionCaller(const char *eventName, const char *data) {
     jw.clear();
 	jw.startObject();
@@ -138,7 +136,6 @@ void ParticleFunctionCaller(const char *eventName, const char *data) {
 
 }
 
-
 bool cmd_resp(String function, String command, String result, int error) {
 	jw.clear();
 	jw.startArray();
@@ -158,8 +155,7 @@ bool cmd_resp(String function, String command, String result, int error) {
 
 }
 
-			
-
+/* ************************ */
 
 // Functions to set various modbus registers.
 // Code is identical, except for the macros macros which are custom to each register.
@@ -348,6 +344,8 @@ int set_offset(String command) {
 
 }
 
+
+/* ************************* */
 
 unsigned long previousMillis1 = 0;
 void loop() {
