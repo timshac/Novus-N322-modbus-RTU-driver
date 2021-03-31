@@ -1,6 +1,6 @@
 	/*
  * Project Novus N322 modbus RTU driver
- * Description:
+ * Description: temperature controller driver
  * Author: tim@hudsonsonoma.com
  * Date: 5 September 2020
  */
@@ -13,7 +13,7 @@ SYSTEM_THREAD(ENABLED);
 #define NODE_BAUD 9600   // The baud rate of the modbus unit
 
 #define CTRL_PIN D6
-#define TEMP_REGISTERS 0
+#define TEMP_REGISTERS 0 // starting offset of modbus holding registers
 
 #include "ModbusMaster.h"
 #include "JsonParserGeneratorRK.h"
@@ -25,11 +25,7 @@ SerialLogHandler logHandler(9600,LOG_LEVEL_WARN, {
 
 // connect to modbus node NODE_UNIT_ID
 ModbusMaster node(NODE_UNIT_ID);
-
-void idle() {
-    delay(10); // in case slave only replies after 10ms
-    Particle.process(); // avoids letting the connection close if open
-}
+JsonWriterStatic<512> jw;
 
 void setup() {
 	pinMode(CTRL_PIN,OUTPUT);
@@ -37,9 +33,6 @@ void setup() {
 	node.begin(NODE_BAUD);
 	node.enableTXpin(CTRL_PIN);
 	node.enableDebug();
-
-	delay(250);
-	node.writeSingleRegister(TEMP_REGISTERS+10,(uint16_t)0);  // Mark as disconnected.
 
     delay(5000);
 
@@ -53,9 +46,9 @@ void setup() {
 
 }
 
-JsonWriterStatic<512> jw;
 
-
+// Functions to set various modbus registers.
+// Code is identical, except for the REGISTER and CONSTRAIN macros which are custom to each register.
 int set_setpoint_1(String command) {
 
 #define REGISTER 0
@@ -197,8 +190,6 @@ int set_offset(String command) {
 
 
 unsigned long previousMillis1 = 0;
-unsigned long previousMillis2 = 0;
-bool previousConnected = false;
 void loop() {
     // do nothing :P
 
@@ -264,30 +255,6 @@ void loop() {
 
 	delay(250);
 	
-	unsigned long currentMillis2 = millis();
-    if(currentMillis2 - previousMillis2 > 5 * 1000) {
-        previousMillis2 = currentMillis2;
-        	uint8_t result;
-        //uint8_t result = node.readHoldingRegisters(TEMP_REGISTERS+10,1);  // SP2
-        //if (result == node.ku8MBSuccess) {
-	//		int16_t val = (int16_t) node.getResponseBuffer(0);
-
-			if ( Particle.connected() == previousConnected )  { // (WiFi.ping(WiFi.gatewayIP()) > 0)
-				;
-			} else {
-				if ( Particle.connected() ) {
-					result = node.writeSingleRegister(TEMP_REGISTERS+10,(uint16_t)(10)); // 1
-					if (result == node.ku8MBSuccess) { previousConnected = true; }
-				} else {
-					result = node.writeSingleRegister(TEMP_REGISTERS+10,(uint16_t)(0)); // 0
-					if (result == node.ku8MBSuccess) { previousConnected = false; }
-				}
-			}
-
-	//	}
-
-
-    }
 
 
 }
