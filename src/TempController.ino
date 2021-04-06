@@ -101,16 +101,16 @@ void setup() {
 }
 
 void ParticleFunctionCaller(const char *eventName, const char *data) {
-    jw.clear();
-	jw.startObject();
-	jw.insertKeyValue("event", eventName);
-	jw.insertKeyValue("data", data);
-	jw.finishObjectOrArray();
-	String json = jw.getBuffer();
-	jw.clear();
-	if (json.charAt(0) == ',') {
-		json.setCharAt(0,' ');
-	} // remove leading comma
+    //jw.clear();
+	//jw.startObject();
+	//jw.insertKeyValue("event", eventName);
+	//jw.insertKeyValue("data", data);
+	//jw.finishObjectOrArray();
+	//String json = jw.getBuffer();
+	//jw.clear();
+	//if (json.charAt(0) == ',') {
+	//	json.setCharAt(0,' ');
+	//} // remove leading comma
 	//Particle.publish(EVENT_NAME + "/notice", json.c_str());
 
 	JSONValue outerObj = JSONValue::parseCopy(data);
@@ -158,7 +158,7 @@ bool cmd_resp(String function, String command, String result, int error) {
 /* ************************ */
 
 // Functions to set various modbus registers.
-// Code is identical, except for the macros macros which are custom to each register.
+// Code is identical, except for the macros which are custom to each register.
 int set_setpoint_1(String command) {
 #define REGISTER 0
 #define FUNCTION_NAME "set_setpoint_1"
